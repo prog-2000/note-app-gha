@@ -1,16 +1,15 @@
 {
     "compatibilities": [
         "EC2",
-        "FARGATE",
-        "MANAGED_INSTANCES"
+        "MANAGED_INSTANCES",
+        "FARGATE"
     ],
     "containerDefinitions": [
         {
             "cpu": 0,
             "environment": [],
-            "environmentFiles": [],
             "essential": true,
-            "image": "014195623020.dkr.ecr.eu-north-1.amazonaws.com/noteapp",
+            "image": "014195623020.dkr.ecr.eu-north-1.amazonaws.com/noteapp:9fab3874ff56d25111fc0cfb929e1b18f81bb39d",
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -18,8 +17,7 @@
                     "awslogs-create-group": "true",
                     "awslogs-region": "eu-north-1",
                     "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
+                }
             },
             "mountPoints": [],
             "name": "note-app_container",
@@ -33,7 +31,6 @@
                 }
             ],
             "systemControls": [],
-            "ulimits": [],
             "volumesFrom": []
         }
     ],
@@ -43,7 +40,7 @@
     "memory": "3072",
     "networkMode": "awsvpc",
     "placementConstraints": [],
-    "registeredAt": "2025-11-12T09:07:49.840Z",
+    "registeredAt": "2025-11-12T13:57:54.482Z",
     "registeredBy": "arn:aws:iam::014195623020:user/Note_app_with_AWS",
     "requiresAttributes": [
         {
@@ -77,13 +74,13 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "revision": 1,
+    "revision": 5,
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
     "status": "ACTIVE",
-    "taskDefinitionArn": "arn:aws:ecs:eu-north-1:014195623020:task-definition/note_app_tkf:1",
+    "taskDefinitionArn": "arn:aws:ecs:eu-north-1:014195623020:task-definition/note_app_tkf:5",
     "taskRoleArn": "arn:aws:iam::014195623020:role/ecsTaskExecutionRole",
     "volumes": [],
     "tags": []
