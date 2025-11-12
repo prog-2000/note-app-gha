@@ -38,14 +38,14 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: note_app_tkf.json   # path to your ECS task definition file
-          container-name: node_js              # must match ECS task definition container name
+          task-definition: node_js_td.json   # path to your ECS task definition file
+          container-name: nodejs_app              # must match ECS task definition container name
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: note_app_sv                 # your ECS service name
-          cluster: note_app_cluster            # your ECS cluster name
+          service: node_js_app                # your ECS service name
+          cluster: CICD_Cluster            # your ECS cluster name
           wait-for-service-stability: true
