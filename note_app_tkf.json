@@ -10,7 +10,7 @@
             "environment": [],
             "environmentFiles": [],
             "essential": true,
-            "image": "014195623020.dkr.ecr.eu-north-1.amazonaws.com/noteapp",
+            "image": "014195623020.dkr.ecr.eu-north-1.amazonaws.com/noteapp:63a08d0e8cdb3a44d06214572d54c3ae01d2ff79",
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
