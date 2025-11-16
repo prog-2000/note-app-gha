@@ -7,7 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: note-app
+    runs-on: [self-hosted, note-app]
+
 
     steps:
       # Step 1: Checkout code
