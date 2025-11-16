@@ -21,7 +21,7 @@ jobs:
 
       # Step 3: Build Docker image
       - name: Build Docker image
-        run: docker build -t my-note-app .
+        run: sudo docker build -t my-note-app .
 
       # Step 4: Login to DockerHub
       - name: Login to DockerHub
@@ -33,11 +33,11 @@ jobs:
       # Step 5: Push image to DockerHub
       - name: Push Docker image
         run: |
-          docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/my-note-app:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-note-app:latest
+          sudo docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/my-note-app:latest
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-note-app:latest
 
       # Step 6: Deploy with docker-compose
       - name: Deploy with docker-compose
         run: |
-          docker-compose down
-          docker-compose up -d
+          sudo docker-compose down
+          sudo docker-compose up -d
