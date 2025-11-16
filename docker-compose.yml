@@ -36,13 +36,13 @@ services:
       - notes-app-nw
 
   db:
-    image: mysql
+    image: mysql:8
     container_name: "db_cont"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=test_db
     volumes:
-      - ./data/mysql/db:/var/lib/mysql
+      - mysql_data:/var/lib/mysql   # use a named volume instead of ./data/mysql/db
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 10s
@@ -51,6 +51,10 @@ services:
       start_period: 60s
     networks:
       - notes-app-nw
+
+volumes:
+  mysql_data:   # declare the named volume
+
 
 networks:
   notes-app-nw:
