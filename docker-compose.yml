@@ -42,7 +42,7 @@ services:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=test_db
     volumes:
-      - /var/lib/mysql_data:/var/lib/mysql   # use a named volume instead of ./data/mysql/db
+      - mysql_data:/var/lib/mysql   # use a named volume instead of ./data/mysql/db
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 10s
