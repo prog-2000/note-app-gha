@@ -13,9 +13,6 @@ jobs:
       # Step 1: Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Cleanup MySQL data
-        run: sudo rm -rf ./data/mysql || true
 
       # Step 2: Show current user
       - name: Who am I
@@ -23,7 +20,7 @@ jobs:
 
       # Step 3: Build Docker image
       - name: Build Docker image
-        run: sudo docker build -t my-note-app .
+        run: docker build -t my-note-app .
 
       # Step 4: Login to DockerHub
       - name: Login to DockerHub
@@ -35,8 +32,8 @@ jobs:
       # Step 5: Push image to DockerHub
       - name: Push Docker image
         run: |
-          sudo docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.1
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.1
+          docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.1
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.1
 
       - name: Set IMAGE_TAG
         run: echo "IMAGE_TAG=latest" >> $GITHUB_ENV
@@ -47,7 +44,16 @@ jobs:
     needs: build
       # Step 6: Deploy with docker-compose
     steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Login to DockerHub
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.1
+
       - name: Deploy with docker-compose
         run: |
-          sudo docker-compose down
-          sudo docker-compose up -d
+          docker-compose down
+          docker-compose up -d
