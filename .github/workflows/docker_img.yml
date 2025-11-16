@@ -1,4 +1,4 @@
-name: NodeJs app deploy
+name: CI/CD Pipeline
 
 on:
   push:
@@ -6,46 +6,37 @@ on:
       - main
 
 jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: note-app
 
     steps:
+      # Step 1: Checkout code
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
+      # Step 2: Show current user
+      - name: Who am I
+        run: whoami
+
+      # Step 3: Build Docker image
+      - name: Build Docker image
+        run: docker build -t my-note-app .
+
+      # Step 4: Login to DockerHub
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1
-      
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push Node.js image with Docker Compose
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
+      # Step 5: Push image to DockerHub
+      - name: Push Docker image
         run: |
-          docker compose -f docker-compose.yml build node_js
-          docker compose -f docker-compose.yml push node_js
-          echo "image=$ECR_REGISTRY/node_js:$IMAGE_TAG" >> $GITHUB_OUTPUT
+          docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/my-note-app:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-note-app:latest
 
-      - name: Render ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: node_js_td.json   # path to your ECS task definition file
-          container-name: nodejs_app              # must match ECS task definition container name
-          image: ${{ steps.build-image.outputs.image }}
-
-      - name: Deploy ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: node_js_app                # your ECS service name
-          cluster: CICD_Cluster            # your ECS cluster name
-          wait-for-service-stability: true
+      # Step 6: Deploy with docker-compose
+      - name: Deploy with docker-compose
+        run: |
+          docker-compose down
+          docker-compose up -d
