@@ -35,6 +35,9 @@ jobs:
           sudo docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/note-app:latest
           sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/note-app:latest
 
+      - name: Set IMAGE_TAG
+        run: echo "IMAGE_TAG=latest" >> $GITHUB_ENV
+
       # Step 6: Deploy with docker-compose
       - name: Deploy with docker-compose
         run: |
