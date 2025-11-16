@@ -32,8 +32,8 @@ jobs:
       # Step 5: Push image to DockerHub
       - name: Push Docker image
         run: |
-          sudo docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/my-note-app:latest
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-note-app:latest
+          sudo docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/note-app:latest
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/note-app:latest
 
       # Step 6: Deploy with docker-compose
       - name: Deploy with docker-compose
