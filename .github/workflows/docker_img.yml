@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, note-app]
+    runs-on: self-hosted
 
 
     steps:
