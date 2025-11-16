@@ -35,8 +35,8 @@ jobs:
       # Step 5: Push image to DockerHub
       - name: Push Docker image
         run: |
-          sudo docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.0
-          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.0
+          sudo docker tag my-note-app ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.1
+          sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/note-app:1.0.1
 
       - name: Set IMAGE_TAG
         run: echo "IMAGE_TAG=latest" >> $GITHUB_ENV
